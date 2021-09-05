@@ -1,25 +1,25 @@
 import React from 'react';
 import axios from 'axios';
+
 import Card from '../components/Card';
+import AppContext from '../context';
 
-function Order() {
-
+function Orders() {
+  const { onAddToFavorite, onAddToCart } = React.useContext(AppContext);
   const [orders, setOrders] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(true);
 
   React.useEffect(() => {
-    async function fetchData() {
+    (async () => {
       try {
-        const data = await axios.get('https://610ce59566dd8f0017b76f15.mockapi.io/orders');
-        console.log(data)
+        const { data } = await axios.get('https://60d62397943aa60017768e77.mockapi.io/orders');
         setOrders(data.reduce((prev, obj) => [...prev, ...obj.items], []));
         setIsLoading(false);
       } catch (error) {
         alert('Ошибка при запросе заказов');
         console.error(error);
       }
-    };
-    fetchData()
+    })();
   }, []);
 
   return (
@@ -37,4 +37,4 @@ function Order() {
   );
 }
 
-export default Order;
+export default Orders;

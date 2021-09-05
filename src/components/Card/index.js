@@ -1,22 +1,32 @@
 import React from 'react';
-import ContentLoader from "react-content-loader"
-import styles from './card.module.scss';
+import ContentLoader from 'react-content-loader';
+
 import AppContext from '../../context';
 
-function Card({ id, name, price, imageUrl, onFavorite, onPlus, Favorited = false, loading = false }) {
-  const {isItemAdded} = React.useContext(AppContext);
-  //const [isAdded, setIsAdded] = React.useState(false);
-  const [isFavorite, setIsFavorite] = React.useState(Favorited);
+import styles from './card.module.scss';
+
+function Card({
+  id,
+  title,
+  imageUrl,
+  price,
+  onFavorite,
+  onPlus,
+  favorited = false,
+  loading = false,
+}) {
+  const { isItemAdded } = React.useContext(AppContext);
+  const [isFavorite, setIsFavorite] = React.useState(favorited);
+  const obj = { id, parentId: id, title, imageUrl, price };
 
   const onClickPlus = () => {
-    onPlus(id, name, price, imageUrl)
-    //setIsAdded(!isAdded)
-  }
+    onPlus(obj);
+  };
 
   const onClickFavorite = () => {
-    onFavorite({ id, name, price, imageUrl })
-    setIsFavorite(!isFavorite)
-  }
+    onFavorite(obj);
+    setIsFavorite(!isFavorite);
+  };
 
   return (
     <div className={styles.card}>
@@ -36,17 +46,26 @@ function Card({ id, name, price, imageUrl, onFavorite, onPlus, Favorited = false
         </ContentLoader>
       ) : (
         <>
-          <div className={styles.favorite} onClick={onClickFavorite}>
-            <img src={isFavorite ? "/img/liked.svg" : "/img/unliked.svg"} alt="unliked" />
-          </div>
-          <img width={133} height={122} src={imageUrl} alt="sd" />
-          <h5>{name}</h5>
+          {onFavorite && (
+            <div className={styles.favorite} onClick={onClickFavorite}>
+              <img src={isFavorite ? 'img/liked.svg' : 'img/unliked.svg'} alt="Unliked" />
+            </div>
+          )}
+          <img width="100%" height={135} src={imageUrl} alt="Sneakers" />
+          <h5>{title}</h5>
           <div className="d-flex justify-between align-center">
             <div className="d-flex flex-column">
-              <span>Стоимость:</span>
-              <b>{price}</b>
+              <span>Цена:</span>
+              <b>{price} руб.</b>
             </div>
-            <img className={styles.plus} onClick={onClickPlus} src={isItemAdded(id) ? "/img/btn-checked.svg" : "/img/btn-plus.svg"} alt="plus" />
+            {onPlus && (
+              <img
+                className={styles.plus}
+                onClick={onClickPlus}
+                src={isItemAdded(id) ? 'img/btn-checked.svg' : 'img/btn-plus.svg'}
+                alt="Plus"
+              />
+            )}
           </div>
         </>
       )}
