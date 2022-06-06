@@ -4,4 +4,4 @@
 
 # ссылка на проект
 
-# [http://localhost:3000/ReduxToolKit]
+# https://den10004.github.io/ReduxToolKit/
